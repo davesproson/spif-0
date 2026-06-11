@@ -4,7 +4,7 @@ from typing import Optional
 
 from cfunits import Units
 from pydantic import BaseModel, ConfigDict
-from vocal.netcdf.mixins import GroupNetCDFMixin
+from vocal.mixins import VocalGroupMixin
 from vocal.validation import (
     validator,
     variable_exists,
@@ -53,7 +53,7 @@ class GroupMeta(BaseModel):
 
     name: str
 
-class GenericGroup(BaseModel, GroupNetCDFMixin):
+class GenericGroup(BaseModel, VocalGroupMixin):
     model_config = ConfigDict(
         title='Group Schema'
     )
@@ -65,7 +65,7 @@ class GenericGroup(BaseModel, GroupNetCDFMixin):
     groups: Optional[list[GenericGroup]] = None
 
 
-class PlatformGroup(BaseModel, GroupNetCDFMixin):
+class PlatformGroup(BaseModel, VocalGroupMixin):
     model_config = ConfigDict(
         title='Group Schema'
     )
@@ -77,7 +77,7 @@ class PlatformGroup(BaseModel, GroupNetCDFMixin):
     groups: Optional[list[GenericGroup]] = None
 
 
-class CoreGroup(BaseModel, GroupNetCDFMixin):
+class CoreGroup(BaseModel, VocalGroupMixin):
     model_config = ConfigDict(
         title='Group Schema'
     )
@@ -184,7 +184,7 @@ class CoreGroup(BaseModel, GroupNetCDFMixin):
         return values
 
 
-class ImagerGroup(BaseModel, GroupNetCDFMixin):
+class ImagerGroup(BaseModel, VocalGroupMixin):
     model_config = ConfigDict(
         title='Imager Group Schema'
     )

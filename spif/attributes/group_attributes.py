@@ -3,8 +3,9 @@ from typing import Literal, Optional
 from pydantic import BaseModel, ConfigDict
 from vocal.field import Field
 
+from vocal.mixins import VocalAttributesMixin
 
-class CoreGroupAttributes(BaseModel):
+class CoreGroupAttributes(BaseModel, VocalAttributesMixin):
     model_config = ConfigDict(
         # Configuration options here
         title='Core Group Attributes',
@@ -20,7 +21,7 @@ class CoreGroupAttributes(BaseModel):
     group_type: Literal['core']
 
 
-class PlatformGroupAttributes(BaseModel):
+class PlatformGroupAttributes(BaseModel, VocalAttributesMixin):
     model_config = ConfigDict(
         # Configuration options here
         title='Platform Group Attributes',
@@ -36,7 +37,7 @@ class PlatformGroupAttributes(BaseModel):
     group_type: Literal['platform']
 
 
-class GenericGroupAttributes(BaseModel):
+class GenericGroupAttributes(BaseModel, VocalAttributesMixin):
     model_config = ConfigDict(
         # Configuration options here
         title='Generic Group Attributes',
@@ -52,7 +53,7 @@ class GenericGroupAttributes(BaseModel):
     group_type: Literal['other']
 
 
-class ImagerGroupAttributes(BaseModel):
+class ImagerGroupAttributes(BaseModel, VocalAttributesMixin):
     model_config = ConfigDict(
         # Configuration options here
         title='Imager Group Attributes',

@@ -2,7 +2,9 @@
 from pydantic import BaseModel
 from vocal.field import Field
 
-class GlobalAttributes(BaseModel):
+from vocal.mixins import VocalAttributesMixin
+
+class GlobalAttributes(BaseModel, VocalAttributesMixin):
     class Config:
         # Configuration options here
         title = 'Global Attributes'
