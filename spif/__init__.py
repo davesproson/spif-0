@@ -148,6 +148,7 @@ from . import models
 from . import attributes
 from . import defaults
 from .filecodec import filecodec
+from .models import Dataset
 
 # Use semantic-version package?
 __version_definition__ = 0
