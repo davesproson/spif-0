@@ -13,7 +13,6 @@ from vocal.validation import (
     variable_has_types,
     variable_has_dimensions,
     substitutor,
-    _randomize_object_name,
 )
 
 from ..attributes.group_attributes import (
@@ -43,7 +42,7 @@ def core_group(func):
         if name != 'core':
             return values
         return func(cls, values)
-    return _randomize_object_name(wrapper)
+    return wrapper
     
 
 
