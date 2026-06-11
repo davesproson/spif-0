@@ -1,8 +1,9 @@
 from typing import Optional
 from pydantic import BaseModel, ConfigDict
 from vocal.field import Field
+from vocal.mixins import VocalAttributeMixin
 
-class VariableAttributes(BaseModel):
+class VariableAttributes(BaseModel, VocalAttributeMixin):
     model_config = ConfigDict(
         # Configuration options here
         title='Variable Attributes',
