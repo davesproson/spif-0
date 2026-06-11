@@ -89,34 +89,34 @@ class CoreGroup(BaseModel, GroupNetCDFMixin):
     groups: Optional[list[GenericGroup]] = None
 
     # Ensure that the 'core' group has the required variables
-    check_for_image_variable = variable_exists('image')
-    check_for_timestamp_variable = variable_exists('timestamp')
-    check_for_startpixel_variable = variable_exists('startpixel')
-    check_for_width_variable = variable_exists('width')
-    check_for_height_variable = variable_exists('height')
-    check_for_overload_variable = variable_exists('overload')
+    _validate_for_image_variable = variable_exists('image')
+    _validate_for_timestamp_variable = variable_exists('timestamp')
+    _validate_for_startpixel_variable = variable_exists('startpixel')
+    _validate_for_width_variable = variable_exists('width')
+    _validate_for_height_variable = variable_exists('height')
+    _validate_for_overload_variable = variable_exists('overload')
 
     # Ensure that the 'core' group has the required dimensions
-    check_for_image_num_dimension = dimension_exists('image_num')
-    check_for_pixel_dimension = dimension_exists('pixel')
+    _validate_for_image_num_dimension = dimension_exists('image_num')
+    _validate_for_pixel_dimension = dimension_exists('pixel')
 
     # Ensure that variables have the correct dimensions
-    check_image_dims = variable_has_dimensions('image', ['pixel'])
-    check_timestamp_dims = variable_has_dimensions('timestamp', ['image_num'])
-    check_startpixel_dims = variable_has_dimensions('startpixel', ['image_num'])
-    check_width_dims = variable_has_dimensions('width', ['image_num'])
-    check_height_dims = variable_has_dimensions('height', ['image_num'])
+    _validate_image_dims = variable_has_dimensions('image', ['pixel'])
+    _validate_timestamp_dims = variable_has_dimensions('timestamp', ['image_num'])
+    _validate_startpixel_dims = variable_has_dimensions('startpixel', ['image_num'])
+    _validate_width_dims = variable_has_dimensions('width', ['image_num'])
+    _validate_height_dims = variable_has_dimensions('height', ['image_num'])
     
     # Check that variables have the correct type
-    image_has_correct_type = variable_has_types('image', UINT8)
-    timestamp_has_correct_type = variable_has_types('timestamp', UINT64)
-    startpixel_has_correct_type = variable_has_types('startpixel', UINTS)
-    width_has_correct_type = variable_has_types('width', UINTS)
-    height_has_correct_type = variable_has_types('height', UINTS)
-    overload_has_correct_type = variable_has_types('overload', INT8)
+    _validate_image_has_correct_type = variable_has_types('image', UINT8)
+    _validate_timestamp_has_correct_type = variable_has_types('timestamp', UINT64)
+    _validate_startpixel_has_correct_type = variable_has_types('startpixel', UINTS)
+    _validate_width_has_correct_type = variable_has_types('width', UINTS)
+    _validate_height_has_correct_type = variable_has_types('height', UINTS)
+    _validate_overload_has_correct_type = variable_has_types('overload', INT8)
 
     # Ensure that required dimensions are unlimited size
-    @validator
+    #@validator
     @core_group
     def check_unlimited_dimensions(cls, values):
         dimensions = values.dimensions
@@ -129,7 +129,7 @@ class CoreGroup(BaseModel, GroupNetCDFMixin):
                     raise ValueError(f'{name} - The \'{dim.name}\' dimension must be unlimited size')
         return values
 
-    @validator 
+    #@validator 
     @core_group
     def check_time_units_valid(cls, values):
         try:
@@ -150,7 +150,7 @@ class CoreGroup(BaseModel, GroupNetCDFMixin):
                     raise ValueError(f'\'timestamp\' variable units must be equivalent to \'{valid_unit}\'')
         return values
 
-    @validator
+    #@validator
     @core_group
     def check_timestamp_variable_standard_name(cls, values):
         try:
@@ -196,35 +196,35 @@ class ImagerGroup(BaseModel, GroupNetCDFMixin):
     variables: list[Variable]
 
     # Ensure that the 'core' group exists
-    check_core_group_exists = validator(group_exists('core'))
+    _validate_core_group_exists = group_exists('core')
 
     # Ensure that the 'imager' group has the correct variables
-    check_color_level_variable_exists = variable_exists('color_level')
-    check_array_size_variable_exists = variable_exists('array_size')
-    check_image_size_variable_exists = variable_exists('image_size')
-    check_resolution_variable_exists = variable_exists('resolution')
-    check_wavelength_variable_exists = variable_exists('wavelength')
-    check_pathlength_variable_exists = variable_exists('pathlength')
+    _validate_color_level_variable_exists = variable_exists('color_level')
+    _validate_array_size_variable_exists = variable_exists('array_size')
+    _validate_image_size_variable_exists = variable_exists('image_size')
+    _validate_resolution_variable_exists = variable_exists('resolution')
+    _validate_wavelength_variable_exists = variable_exists('wavelength')
+    _validate_pathlength_variable_exists = variable_exists('pathlength')
 
     # Ensure that the 'imager' group has the correct dimensions
-    check_array_dimensions_dimension_exists = validator(dimension_exists('array_dimensions'))
-    check_pixel_colors_dimension_exists = validator(dimension_exists('pixel_colors'))
+    _validate_array_dimensions_dimension_exists = dimension_exists('array_dimensions')
+    _validate_pixel_colors_dimension_exists = dimension_exists('pixel_colors')
 
     # Ensure required variables have the correct dimensions
-    check_color_level_dims = validator(variable_has_dimensions('color_level', ['pixel_colors']))
-    check_array_size_dims = validator(variable_has_dimensions('array_size', ['array_dimensions']))
-    check_image_size_dims = validator(variable_has_dimensions('image_size', ['array_dimensions']))
-    check_resolution_dims = validator(variable_has_dimensions('resolution', ['array_dimensions']))
+    _validate_color_level_dims = variable_has_dimensions('color_level', ['pixel_colors'])
+    _validate_array_size_dims = variable_has_dimensions('array_size', ['array_dimensions'])
+    _validate_image_size_dims = variable_has_dimensions('image_size', ['array_dimensions'])
+    _validate_resolution_dims = variable_has_dimensions('resolution', ['array_dimensions'])
     
     # Check that variables have the correct type
-    check_color_level_has_correct_type = validator(variable_has_types('color_level', FLOATS))
-    check_array_size_has_correct_type = validator(variable_has_types('array_size', INTS))
-    check_image_size_has_correct_type = validator(variable_has_types('image_size', INTS))
-    check_resolution_has_correct_type = validator(variable_has_types('resolution', FLOATS))
-    check_wavelength_has_correct_type = validator(variable_has_types('wavelength', FLOATS))
-    check_pathlength_has_correct_type = validator(variable_has_types('pathlength', FLOATS))
+    _validate_color_level_has_correct_type = variable_has_types('color_level', FLOATS)
+    _validate_array_size_has_correct_type = variable_has_types('array_size', INTS)
+    _validate_image_size_has_correct_type = variable_has_types('image_size', INTS)
+    _validate_resolution_has_correct_type = variable_has_types('resolution', FLOATS)
+    _validate_wavelength_has_correct_type = variable_has_types('wavelength', FLOATS)
+    _validate_pathlength_has_correct_type = variable_has_types('pathlength', FLOATS)
 
-    @validator
+    #@validator
     def array_dimensions_dimension_size_1_or_2(cls, values):
         """
         array_dimensions dimension must have a size of 1 or 2
