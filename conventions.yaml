@@ -1,0 +1,6 @@
+conventions:
+  name: SPIF
+  major: 0
+  minor: 1
+layout:
+  project_directory: faam

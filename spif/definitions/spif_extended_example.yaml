@@ -1,0 +1,483 @@
+# Example definition file for an imaginary OAP owned by an arbitrary
+# organisation. Use with SPIF vocal project to create/check netCDF files
+#
+# This is an example SPIF netCDF definition for an imaginary optical array
+# probe, called an OAP100. The definition is designed to satisfy requirements
+# of the SPIF standard as well as the in-house requirements of an arbitrary
+# organisation that produces the data. The in-house requirements include
+# additional global attributes, a 'platform' group which includes some
+# aircraft state data that will aid interpretation of the processed particle
+# image data, and an 'OAP100/auxillary' group which includes some instrument
+# housekeeping data that may be useful for flagging issues with instrument
+# performance. The variables in these two groups are recommended but not
+# required by the in-house standards.
+#
+# Definition version: 20231219
+# Creates version: 1.0
+# Example filename: imaginary_oap_20231219_v001.nc
+#
+meta:
+  file_pattern: >-
+    arbitrary_oap_[0-9]{8}_v001.nc
+  short_name: 'oap100_spif'
+  long_name: 'Decoded raw image data from an imaginary OAP'
+  description: >-
+    This dataset contains fabricated raw image data for an imaginary optical
+    array probe, the OAP100. Also included may be aircraft position data and
+    probe housekeeping data.
+  references:
+    - ['data documentation', 'https://www.arbitrary.org/data_standards/']
+    - ['SPIF standard', 'https://github.com/FAAM-146/spif']
+
+# Global attributes
+# ------------------------------------------------------------------------------
+attributes:
+  Conventions: CF-1.9, ACDD-1.3, SPIF-0.1
+  title: '<str: derived_from_file>'
+  summary: '<str: derived_from_file>'
+  references: '<str: derived_from_file>'
+  comment: '<str: derived_from_file optional>'
+  history: '<str: derived_from_file>'
+
+  # data creator and publisher
+  creator_name: ARO
+  creator_institution: Abitrary Research Organisation
+  creator_address:  A Building, Campus District, Town, Country.
+  creator_email: info@arbitrary.org
+  creator_url: https://www.arbitrary.org
+  creator_type: institution
+  date_created: '<str: derived_from_file>'
+
+  # data source information
+  imager_groups: OAP100
+  source: In situ probe; optical array probe.
+  instrument: OAP100
+  project: ACC - Arbitrary Cloud Campaign
+  platform: Good Airplane v3
+  platform_type: aircraft
+  deployment_mode: air
+
+  # data information
+  flight_date: '<str: derived_from_file>'  #'datetime.date'
+  flight_number: '<str: derived_from_file>'
+  time_coverage_duration: '<str: derived_from_file>'  #'datetime.timedelta'
+  time_coverage_start: '<str: derived_from_file>'  #'datetime.datetime'
+  time_coverage_end: '<str: derived_from_file>'  #'datetime.datetime'
+  geospatial_bounds: '<str: derived_from_file>'
+  geospatial_bounds_crs: '<str: derived_from_file>'
+  geospatial_lat_max: '<float32: derived_from_file>'
+  geospatial_lat_min: '<float32: derived_from_file>'
+  geospatial_lat_units: '<str: derived_from_file>'
+  geospatial_lon_max: '<float32: derived_from_file>'
+  geospatial_lon_min: '<float32: derived_from_file>'
+  geospatial_lon_units: '<str: derived_from_file>'
+  geospatial_vertical_max: '<float32: derived_from_file>'
+  geospatial_vertical_min: '<float32: derived_from_file>'
+  geospatial_vertical_units: '<str: derived_from_file>'
+  geospatial_vertical_positive: '<str: derived_from_file>'
+
+  # Usage and vocab information
+  keywords: >-
+    CLOUD DROPLET DISTRIBUTION,
+  keywords_vocabulary: 'Global Change Master Directory (GCMD)'
+  acknowledgement: >-
+    This data has been fabricated to replicate that from an imaginary
+    but non-existant optical array probe (OAP). It is included as part of
+    the SPIF vocal project repository as an example only.
+
+# No variables or dimensions are required in the root group
+variables: []
+dimensions: []
+
+# ------------------------------------------------------------------------------
+groups:
+  - meta:
+      name: platform
+      description: Data from platform that is used to process image data
+  
+    attributes:
+      group_type: platform
+      comment: '<str: derived_from_file optional>' 
+
+    dimensions:
+      - name: Time
+        size: null
+      - name: sps32
+        size: 32
+
+    variables:
+      - meta:
+          name: Time
+          datatype: <int32>
+          required: false
+        dimensions: ['Time']
+        attributes:
+          long_name: Time of measurement
+          standard_name: time
+          calendar: gregorian
+          coverage_content_type: coordinate
+          frequency: 32
+          units: '<str: derived_from_file>'
+          _FillValue: -9999
+
+      - meta:
+          name: altitude
+          datatype: <float32>
+          required: false
+        dimensions: ['Time', 'sps32']
+        attributes:
+          long_name: Platform altitude
+          standard_name: altitude
+          coverage_content_type: physicalMeasurement
+          frequency: 32
+          units: '<str: derived_from_file>'
+          actual_range:
+            - '<float32: derived_from_file>'
+            - '<float32: derived_from_file>'
+          axis: Z
+          positive: up
+          _FillValue: -9999.
+
+      - meta:
+          name: latitude
+          datatype: <float32>
+          required: false
+        dimensions: ['Time', 'sps32']
+        attributes:
+          long_name: Platform latitude
+          standard_name: latitude
+          coverage_content_type: physicalMeasurement
+          source: '<str: derived_from_file>'
+          frequency: 32
+          units: '<str: derived_from_file>'
+          actual_range: 
+            - '<float32: derived_from_file>'
+            - '<float32: derived_from_file>'
+          axis: Y
+          _FillValue: -9999.
+
+      - meta:
+          name: longitude
+          datatype: <float32>
+          required: false
+        dimensions: ['Time', 'sps32']
+        attributes:
+          long_name: Platform longitude
+          standard_name: longitude
+          coverage_content_type: physicalMeasurement
+          source: '<str: derived_from_file>'
+          frequency: 32
+          units: '<str: derived_from_file>'
+          actual_range: 
+            - '<float32: derived_from_file>'
+            - '<float32: derived_from_file>'
+          axis: X
+          _FillValue: -9999.
+
+      - meta:
+          name: tas
+          datatype: <float32>
+          required: false
+        dimensions: ['Time', 'sps32']
+        attributes:
+          long_name: Platform true air speed
+          standard_name: platform_speed_wrt_air
+          coverage_content_type: physicalMeasurement
+          source: '<str: derived_from_file>'
+          frequency: 32
+          units: '<str: derived_from_file>'
+          actual_range:
+            - '<float32: derived_from_file>'
+            - '<float32: derived_from_file>'
+          _FillValue: -9999.
+
+
+  # ----------------------------------------------------------------------------
+  # Top-level instrument group
+  - meta:
+      name: OAP100
+      description: >-
+        Instrument group of raw and processed data for this instrument.
+
+    attributes:
+      group_type: imager
+      # instrument information
+      instrument: '<str: derived_from_file optional>'
+      instrument_name: OAP100
+      instrument_long_name: Optical Array Probe - 100um
+      instrument_description: >-
+        Imaginary Optical Array Probe with 100 um pixel resolution and
+        four levels of grayscale.
+      instrument_location: '<str: derived_from_file>'
+      instrument_orientation: '<str: derived_from_file>'
+      instrument_manufacturer: OAP Instruments ltd
+      instrument_model: OAP100-GS
+      instrument_serial_number: '001'
+      instrument_software: '<str: derived_from_file optional>'
+      instrument_software_version: '<str: derived_from_file optional>'
+      instrument_fimware: '<str: derived_from_file optional>'
+      references: https://www.OAP_instruments.com/manuals
+      raw_filenames: '<str: derived_from_file optional>'
+
+    # instrument group dimensions
+    dimensions:
+      - name: array_dimensions
+        size: 2
+      - name: pixel_colors
+        size: 3
+
+    variables:
+      # instrument group mandatory variables
+      - meta:
+          name: color_level
+          datatype: <float32>
+          required: true
+        dimensions: ['pixel_colors']
+        attributes:
+          long_name: Lower bound of obscuration/grayscale/color level
+          coverage_content_type: auxiliaryInformation
+          units: '1'
+          _FillValue: -9999.
+          comment: >-
+            Obscuration/grayscale/color level corresponding to each value of
+            pixel_colors. For example, a grayscale OAP may have lower-bound
+            shadow levels of [0, 0.25, 0.5, 0.75].
+
+      - meta:
+          name: array_size
+          datatype: <int32>
+          required: true
+        dimensions: ['array_dimensions']
+        attributes:
+          long_name: Number of pixels in detector along each array dimension
+          coverage_content_type: auxiliaryInformation
+          units: '1'
+          _FillValue: -9999
+
+      - meta:
+          name: image_size
+          datatype: <int32>
+          required: true
+        dimensions: ['array_dimensions']
+        attributes:
+          long_name: Number of pixels across an image along each array dimension
+          coverage_content_type: auxiliaryInformation
+          units: '1'
+          _FillValue: -9999
+          comment: >-
+            If variable size images are produced by probe then is _FillValue.
+
+      - meta:
+          name: resolution
+          datatype: <float32>
+          required: true
+        dimensions: ['array_dimensions']
+        attributes:
+          long_name: Pixel resolution along each array dimension
+          coverage_content_type: auxiliaryInformation
+          units: '<str: derived_from_file>'
+          _FillValue: -9999.
+
+      - meta:
+          name: wavelength
+          datatype: <float32>
+          required: true
+        dimensions: []
+        attributes:
+          long_name: Wavelength of laser used for imaging particles
+          coverage_content_type: auxiliaryInformation
+          units: '<str: derived_from_file>'
+          _FillValue: -9999.
+
+      - meta:
+          name: pathlength
+          datatype: <float32>
+          required: true
+        dimensions: []
+        attributes:
+          long_name: Optical path length of imaging region
+          coverage_content_type: auxiliaryInformation
+          units: '<str: derived_from_file>'
+          _FillValue: -9999.
+          comment: For OAPs the pathlength will be arm separation distance.
+
+      # instrument group optional variables
+      - meta:
+          name: color_value
+          datatype: <uint8>
+          required: false
+        dimensions: ['pixel_colors']
+        attributes:
+          long_name: Byte values of image associated with each color_level value
+          coverage_content_type: auxiliaryInformation
+          units: '1'
+          _FillValue: 255
+
+      - meta:
+          name: resolution_error
+          datatype: <float32>
+          required: false
+        dimensions: ['array_dimensions']
+        attributes:
+          long_name: Uncertainty of pixel resolution
+          coverage_content_type: auxiliaryInformation
+          units: '<str: derived_from_file>'
+          _FillValue: -9999.
+
+    groups:
+      # instrument/core group
+      - meta:
+          name: core
+          description: Decompressed raw image data
+
+        attributes:
+          group_type: core
+
+        # instrument/core group dimensions. Both are UNLIMITED
+        dimensions:
+          - name: image_num
+            size: null
+          - name: pixel
+            size: null
+
+        # Required instrument/core group variables
+        variables:
+          - meta:
+              name: image
+              datatype: <uint8>
+              required: true
+            dimensions: ['pixel']
+            attributes:
+              long_name: 1-dimensional array of series of images
+              coverage_content_type: image
+              _FillValue: 255
+
+          - meta:
+              name: timestamp
+              datatype: <uint64>
+              required: true
+            dimensions: ['image_num']
+            attributes:
+              long_name: Image arrival time
+              standard_name: time
+              units: '<str: derived_from_file>'
+
+          - meta:
+              name: startpixel
+              datatype: <uint32>
+              required: true
+            dimensions: ['image_num']
+            attributes:
+              long_name: Array index for the first pixel of each image in image
+              _FillValue: 4294967295
+
+          - meta:
+              name: width
+              datatype: <uint8>
+              required: true
+            dimensions: ['image_num']
+            attributes:
+              long_name: Number of pixels across an image
+              _FillValue: 255
+
+          - meta:
+              name: height
+              datatype: <uint8>
+              required: true
+            dimensions: ['image_num']
+            attributes:
+              long_name: Number of slices/lines along an image
+              _FillValue: 255
+
+          - meta:
+              name: overload
+              datatype: <byte>
+              required: true
+            dimensions: ['image_num']
+            attributes:
+              long_name: Overload flag for each image
+              _FillValue: -127
+
+          # instrument.core group optional variables
+          - meta:
+              name: timestamp_flag
+              datatype: <byte>
+              required: false
+            dimensions: ['image_num']
+            attributes:
+              long_name: Surety in determination of image arrival timestamp
+              flag_values: '<Array[byte]: derived_from_file>'
+              flag_meanings: '<str: derived_from_file>'
+              _FillValue: -127
+
+      # instrument/auxillary group
+      - meta:
+          name: auxillary
+          description: >-
+            Other probe data and housekeeping from data acquisition system.
+            These are simple timeseries.
+
+        attributes:
+          group_type: other
+          comment: Data and housekeeping obtained from the auxillary datafile/s
+          raw_filenames: '<str: derived_from_file optional>'
+
+        dimensions:
+          - name: Time
+            size: null
+
+        variables:
+          - meta:
+              name: Time
+              datatype: <int32>
+              required: false
+            dimensions: ['Time']
+            attributes:
+              long_name: Time of measurement
+              standard_name: time
+              calendar: gregorian
+              coverage_content_type: coordinate
+              frequency: 1
+              units: '<str: derived_from_file>'
+              _FillValue: -9999
+
+          - meta:
+              name: laser_power
+              datatype: <float32>
+              required: false
+            dimensions: ['Time']
+            attributes:
+              long_name: Real-time measured laser output power
+              coverage_content_type: physicalMeasurement
+              frequency: 1
+              units: 'mW'
+              _FillValue: -9999.
+
+          - meta:
+              name: laser_temperature
+              datatype: <float32>
+              required: false
+            dimensions: ['Time']
+            attributes:
+              long_name: Laser temperature
+              coverage_content_type: physicalMeasurement
+              comment: Real-time measured laser diode temperature
+              frequency: 1
+              units: 'degC'
+              _FillValue: -9999.
+
+          - meta:
+              name: laser_current
+              datatype: <float32>
+              required: false
+            dimensions: ['Time']
+            attributes:
+              long_name: Laser current
+              coverage_content_type: physicalMeasurement
+              comment: Real-time measured laser diode current
+              frequency: 1
+              units: 'mA'
+              _FillValue: -9999.
+
+
+

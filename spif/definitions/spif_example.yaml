@@ -1,0 +1,213 @@
+# Minimal example spif definition file.
+# Use with SPIF vocal project to create/check netCDF files
+#
+# Provides a minimal example of a SPIF dataset including mandatory
+# requirements only.
+#
+# see;
+#    https://github.com/FAAM-146/spif
+#
+# Definition version: 20231219
+# Creates version: 1.0
+# Example filename: spif_example.nc
+#
+meta:
+  file_pattern: spif_example.nc
+  short_name: spif
+  long_name: A SPIF example dataset
+  description: >-
+    This dataset contains the minimum required contents to satisfy the SPIF
+    requirements.
+  references:
+    - ['SPIF standard', 'https://github.com/FAAM-146/spif']
+
+# Global attributes
+# ------------------------------------------------------------------------------
+attributes:
+  Conventions: SPIF-0.1
+  imager_groups: '<str: derived_from_file>'
+
+# No variables or dimensions are required in the root group
+variables: []
+dimensions: []
+
+# ------------------------------------------------------------------------------
+groups:
+  # Top-level imager group
+  - meta:
+      name: imager_1
+      description: >-
+        Group containing image data from a single instrument or instrument
+        channel.
+
+    # Required imager group attributes
+    attributes:
+      instrument_name: imager_1
+      group_type: imager
+
+    # Required imager group dimensions
+    dimensions:
+      - name: array_dimensions
+        size: 2
+      - name: pixel_colors
+        size: 3
+    
+    # imager group mandatory variables
+    variables:
+      - meta:
+          name: color_level
+          datatype: <float32>
+          required: true
+          description: >-
+            Lower bound of fractional obscuration/grayscale/color level of
+            photo-detectors for each ``color_value``.
+        dimensions: ['pixel_colors']
+        attributes: {}
+
+      - meta:
+          name: color_value
+          datatype: <uint8>
+          required: false
+          description: >-
+            Value of each color used in image. Usually these will be contiguous
+            but it does not have to be. Can be included to facilitate the use
+            of arbitrary values in the ``core/image`` variable.
+        dimensions: ['pixel_colors']
+        attributes: {}
+
+      - meta:
+          name: array_size
+          datatype: <int32>
+          required: true
+          description: >-
+            Number of pixels on the detector.
+        dimensions: ['array_dimensions']
+        attributes: {}
+      
+      - meta:
+          name: image_size
+          datatype: <int32>
+          required: true
+          description: >-
+            Number of pixels across an image. If fixed size then will be
+            number of pixels, if variable size then use ``_FillValue``.
+        dimensions: ['array_dimensions']
+        attributes: {}
+      
+      - meta:
+          name: resolution
+          datatype: <float32>
+          required: true
+          description: >-
+            Image resolution of instrument for each dimension.
+        dimensions: ['array_dimensions']
+        attributes: {}
+      
+      - meta:
+          name: wavelength
+          datatype: <float32>
+          required: true
+          description: >-
+            Operating wavelength of laser used for shadowing/imaging the
+            particles. If white light source then use ``_FillValue``.
+        dimensions: []
+        attributes: {}
+      
+      - meta:
+          name: pathlength
+          datatype: <float32>
+          required: true
+          description: >-
+            Optical path length of imaging region.
+        dimensions: []
+        attributes: {}
+
+      - meta:
+          name: resolution_error
+          datatype: <float32>
+          required: false
+          description: >-
+            Uncertainty of the image resolution of instrument for each dimension.
+        dimensions: ['array_dimensions']
+        attributes: {}
+
+# ------------------------------------------------------------------------------
+    groups:
+      # imager/core group is required.
+      - meta:
+          name: core
+          description: >-
+            The imager core group containing the flattened image data and
+            variables needed for reading that data.
+
+        # No imager/core mandatory attributes
+        attributes:
+          group_type: core
+        
+        # imager/core group dimensions. Both are UNLIMITED
+        dimensions:
+          - name: image_num
+            size: null
+          - name: pixel
+            size: null
+
+        # Required imager/core group variables
+        variables:
+        
+          - meta:
+              name: image
+              datatype: <uint8>
+              required: true
+              description: >-
+                Flattened array of image pixel color values.
+            dimensions: ['pixel']
+            attributes: {}
+
+          - meta:
+              name: timestamp
+              datatype: <uint64>
+              required: true
+              description: >-
+                Arrival time, relative to a reference start time, of the first
+                pixel of an image.
+            dimensions: ['image_num']
+            attributes:
+              attribute1: testing a variable attribute not in the SPIF spec
+              standard_name: time
+              units: '<str: derived_from_file>'
+
+          - meta:
+              name: startpixel
+              datatype: <uint32>
+              required: true
+              description: >-
+                Array index of first pixel of an image.
+            dimensions: ['image_num']
+            attributes: {}
+
+          - meta:
+              name: width
+              datatype: <uint8>
+              required: true
+              description: >-
+                Number of pixels across an image.
+            dimensions: ['image_num']
+            attributes: {}
+
+          - meta:
+              name: height
+              datatype: <uint8>
+              required: true
+              description: >-
+                Number of slices/lines in an image.
+            dimensions: ['image_num']
+            attributes: {}
+
+          - meta:
+              name: overload
+              datatype: <byte>
+              required: true
+              description: >-
+                Flag indicating an imager overload condition for each image.
+            dimensions: ['image_num']
+            attributes: {}
