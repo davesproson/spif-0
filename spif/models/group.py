@@ -97,23 +97,23 @@ class CoreGroup(BaseModel, GroupNetCDFMixin):
     check_for_overload_variable = variable_exists('overload')
 
     # Ensure that the 'core' group has the required dimensions
-    check_for_image_num_dimension = validator(dimension_exists('image_num'))
-    check_for_pixel_dimension = validator(dimension_exists('pixel'))
+    check_for_image_num_dimension = dimension_exists('image_num')
+    check_for_pixel_dimension = dimension_exists('pixel')
 
     # Ensure that variables have the correct dimensions
-    check_image_dims = validator(variable_has_dimensions('image', ['pixel']))
-    check_timestamp_dims = validator(variable_has_dimensions('timestamp', ['image_num']))
-    check_startpixel_dims = validator(variable_has_dimensions('startpixel', ['image_num']))
-    check_width_dims = validator(variable_has_dimensions('width', ['image_num']))
-    check_height_dims = validator(variable_has_dimensions('height', ['image_num']))
+    check_image_dims = variable_has_dimensions('image', ['pixel'])
+    check_timestamp_dims = variable_has_dimensions('timestamp', ['image_num'])
+    check_startpixel_dims = variable_has_dimensions('startpixel', ['image_num'])
+    check_width_dims = variable_has_dimensions('width', ['image_num'])
+    check_height_dims = variable_has_dimensions('height', ['image_num'])
     
     # Check that variables have the correct type
-    image_has_correct_type = validator(variable_has_types('image', UINT8))
-    timestamp_has_correct_type = validator(variable_has_types('timestamp', UINT64))
-    startpixel_has_correct_type = validator(variable_has_types('startpixel', UINTS))
-    width_has_correct_type = validator(variable_has_types('width', UINTS))
-    height_has_correct_type = validator(variable_has_types('height', UINTS))
-    overload_has_correct_type = validator(variable_has_types('overload', INT8))
+    image_has_correct_type = variable_has_types('image', UINT8)
+    timestamp_has_correct_type = variable_has_types('timestamp', UINT64)
+    startpixel_has_correct_type = variable_has_types('startpixel', UINTS)
+    width_has_correct_type = variable_has_types('width', UINTS)
+    height_has_correct_type = variable_has_types('height', UINTS)
+    overload_has_correct_type = variable_has_types('overload', INT8)
 
     # Ensure that required dimensions are unlimited size
     @validator
