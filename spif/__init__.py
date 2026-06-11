@@ -147,6 +147,7 @@ Mandatory Attributes:
 from . import models
 from . import attributes
 from . import defaults
+from .filecodec import filecodec
 
 # Use semantic-version package?
 __version_definition__ = 0
